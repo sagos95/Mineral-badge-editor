@@ -3,6 +3,47 @@ document.addEventListener('DOMContentLoaded', function() {
     const generateBtn = document.getElementById('generateBtn');
     const badgesContainer = document.getElementById('badgesContainer');
     const printBtn = document.getElementById('printBtn');
+    const badgeSizeSlider = document.getElementById('badgeSize');
+    const badgeSizeValue = document.getElementById('badgeSizeValue');
+    
+    // Base dimensions for badges
+    const baseBadgeWidth = 200;
+    const baseBadgeHeight = 120;
+    
+    let currentSize = 100; // Default size percentage
+    
+    // Update size value display and apply size to existing badges
+    badgeSizeSlider.addEventListener('input', function() {
+        currentSize = this.value;
+        badgeSizeValue.textContent = currentSize + '%';
+        
+        // Apply size to all existing badges
+        updateBadgesSize();
+    });
+    
+    // Function to update the size of all badges
+    function updateBadgesSize() {
+        const badges = document.querySelectorAll('.mineral-badge');
+        const newWidth = (baseBadgeWidth * currentSize / 100) + 'px';
+        const newHeight = (baseBadgeHeight * currentSize / 100) + 'px';
+        
+        badges.forEach(badge => {
+            badge.style.width = newWidth;
+            badge.style.height = newHeight;
+            
+            // Adjust font size proportionally
+            const nameElement = badge.querySelector('.mineral-name');
+            const infoElement = badge.querySelector('.mineral-info');
+            
+            if (nameElement) {
+                nameElement.style.fontSize = (18 * currentSize / 100) + 'px';
+            }
+            
+            if (infoElement) {
+                infoElement.style.fontSize = (14 * currentSize / 100) + 'px';
+            }
+        });
+    }
     
     // Generate badges when the button is clicked
     generateBtn.addEventListener('click', function() {
@@ -51,6 +92,9 @@ document.addEventListener('DOMContentLoaded', function() {
             badge.appendChild(mineralInfo);
             badgesContainer.appendChild(badge);
         });
+        
+        // Apply current size to newly created badges
+        updateBadgesSize();
         
         // Show the print button if badges were created
         printBtn.style.display = 'block';
