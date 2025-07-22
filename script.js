@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const filteredList = mineralsList.filter(mineral => mineral.trim() !== '');
         
         if (filteredList.length === 0) {
-            alert('Please enter at least one mineral name.');
+            alert('Пожалуйста, введите хотя бы одно название минерала.');
             return;
         }
         
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Add current date to the badge
             const currentDate = new Date();
             const formattedDate = currentDate.toLocaleDateString();
-            mineralInfo.textContent = `Cataloged: ${formattedDate}`;
+            mineralInfo.textContent = `Каталогизировано: ${formattedDate}`;
             
             badge.appendChild(mineralName);
             badge.appendChild(mineralInfo);
