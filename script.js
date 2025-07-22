@@ -31,16 +31,21 @@ document.addEventListener('DOMContentLoaded', function() {
             badge.style.width = newWidth;
             badge.style.height = newHeight;
             
-            // Adjust font size proportionally
+            // Adjust font size proportionally for new structure
             const nameElement = badge.querySelector('.mineral-name');
-            const infoElement = badge.querySelector('.mineral-info');
+            const formulaElement = badge.querySelector('.mineral-formula');
+            const locationElement = badge.querySelector('.mineral-location');
             
             if (nameElement) {
                 nameElement.style.fontSize = (18 * currentSize / 100) + 'px';
             }
             
-            if (infoElement) {
-                infoElement.style.fontSize = (14 * currentSize / 100) + 'px';
+            if (formulaElement) {
+                formulaElement.style.fontSize = (16 * currentSize / 100) + 'px';
+            }
+            
+            if (locationElement) {
+                locationElement.style.fontSize = (14 * currentSize / 100) + 'px';
             }
         });
     }
@@ -76,20 +81,34 @@ document.addEventListener('DOMContentLoaded', function() {
             const badge = document.createElement('div');
             badge.className = 'mineral-badge';
             
-            const mineralName = document.createElement('div');
-            mineralName.className = 'mineral-name';
-            mineralName.textContent = mineral.trim();
+            // Parse mineral data by splitting on '|'
+            const parts = mineral.split('|').map(part => part.trim());
+            const mineralName = parts[0] || '';
+            const mineralFormula = parts[1] || '';
+            const mineralLocation = parts[2] || '';
             
-            const mineralInfo = document.createElement('div');
-            mineralInfo.className = 'mineral-info';
+            // Create first row container (name and formula)
+            const firstRow = document.createElement('div');
+            firstRow.className = 'mineral-first-row';
             
-            // Add current date to the badge
-            const currentDate = new Date();
-            const formattedDate = currentDate.toLocaleDateString();
-            mineralInfo.textContent = `Каталогизировано: ${formattedDate}`;
+            const nameElement = document.createElement('span');
+            nameElement.className = 'mineral-name';
+            nameElement.textContent = mineralName;
             
-            badge.appendChild(mineralName);
-            badge.appendChild(mineralInfo);
+            const formulaElement = document.createElement('span');
+            formulaElement.className = 'mineral-formula';
+            formulaElement.textContent = mineralFormula;
+            
+            firstRow.appendChild(nameElement);
+            firstRow.appendChild(formulaElement);
+            
+            // Create location info element
+            const locationInfo = document.createElement('div');
+            locationInfo.className = 'mineral-location';
+            locationInfo.textContent = mineralLocation;
+            
+            badge.appendChild(firstRow);
+            badge.appendChild(locationInfo);
             badgesContainer.appendChild(badge);
         });
         
