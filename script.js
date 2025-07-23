@@ -5,20 +5,99 @@ document.addEventListener('DOMContentLoaded', function() {
     const printBtn = document.getElementById('printBtn');
     const badgeSizeSlider = document.getElementById('badgeSize');
     const badgeSizeValue = document.getElementById('badgeSizeValue');
+    const fontSizeSlider = document.getElementById('fontSize');
+    const fontSizeValue = document.getElementById('fontSizeValue');
     
     // Base dimensions for badges
     const baseBadgeWidth = 200;
     const baseBadgeHeight = 120;
     
+    // Base font sizes
+    const baseNameSize = 18;
+    const baseFormulaSize = 16;
+    const baseLocationSize = 14;
+    
     let currentSize = 100; // Default size percentage
+    let currentFontScale = 100; // Default font scale percentage
+    
+    // Keys for localStorage
+    const STORAGE_KEYS = {
+        MINERALS_TEXT: 'minerals-badges-text',
+        BADGE_SIZE: 'minerals-badges-size',
+        FONT_SIZE: 'minerals-badges-font-size'
+    };
+    
+    // Function to save data to localStorage
+    function saveToStorage(key, value) {
+        try {
+            localStorage.setItem(key, value);
+        } catch (error) {
+            console.warn('Не удалось сохранить данные в localStorage:', error);
+        }
+    }
+    
+    // Function to load data from localStorage
+    function loadFromStorage(key, defaultValue = null) {
+        try {
+            const value = localStorage.getItem(key);
+            return value !== null ? value : defaultValue;
+        } catch (error) {
+            console.warn('Не удалось загрузить данные из localStorage:', error);
+            return defaultValue;
+        }
+    }
+    
+    // Function to load saved settings
+    function loadSavedSettings() {
+        // Load saved minerals text
+        const savedText = loadFromStorage(STORAGE_KEYS.MINERALS_TEXT, '');
+        if (savedText) {
+            mineralsInput.value = savedText;
+        }
+        
+        // Load saved badge size
+        const savedBadgeSize = loadFromStorage(STORAGE_KEYS.BADGE_SIZE, '100');
+        currentSize = parseInt(savedBadgeSize);
+        badgeSizeSlider.value = currentSize;
+        badgeSizeValue.textContent = currentSize + '%';
+        
+        // Load saved font size
+        const savedFontSize = loadFromStorage(STORAGE_KEYS.FONT_SIZE, '100');
+        currentFontScale = parseInt(savedFontSize);
+        fontSizeSlider.value = currentFontScale;
+        fontSizeValue.textContent = currentFontScale + '%';
+    }
+    
+    // Load saved settings on page load
+    loadSavedSettings();
+    
+    // Auto-save minerals text input
+    mineralsInput.addEventListener('input', function() {
+        saveToStorage(STORAGE_KEYS.MINERALS_TEXT, this.value);
+    });
     
     // Update size value display and apply size to existing badges
     badgeSizeSlider.addEventListener('input', function() {
         currentSize = this.value;
         badgeSizeValue.textContent = currentSize + '%';
         
+        // Save to localStorage
+        saveToStorage(STORAGE_KEYS.BADGE_SIZE, currentSize);
+        
         // Apply size to all existing badges
         updateBadgesSize();
+    });
+    
+    // Update font size value display and apply font size to existing badges
+    fontSizeSlider.addEventListener('input', function() {
+        currentFontScale = this.value;
+        fontSizeValue.textContent = currentFontScale + '%';
+        
+        // Save to localStorage
+        saveToStorage(STORAGE_KEYS.FONT_SIZE, currentFontScale);
+        
+        // Apply font size to all existing badges
+        updateBadgesFontSize();
     });
     
     // Function to update the size of all badges
@@ -30,22 +109,31 @@ document.addEventListener('DOMContentLoaded', function() {
         badges.forEach(badge => {
             badge.style.width = newWidth;
             badge.style.height = newHeight;
-            
-            // Adjust font size proportionally for new structure
+        });
+        
+        // Also update font sizes when badge size changes
+        updateBadgesFontSize();
+    }
+    
+    // Function to update font sizes of all badges
+    function updateBadgesFontSize() {
+        const badges = document.querySelectorAll('.mineral-badge');
+        
+        badges.forEach(badge => {
             const nameElement = badge.querySelector('.mineral-name');
             const formulaElement = badge.querySelector('.mineral-formula');
             const locationElement = badge.querySelector('.mineral-location');
             
             if (nameElement) {
-                nameElement.style.fontSize = (18 * currentSize / 100) + 'px';
+                nameElement.style.fontSize = (baseNameSize * currentFontScale / 100) + 'px';
             }
             
             if (formulaElement) {
-                formulaElement.style.fontSize = (16 * currentSize / 100) + 'px';
+                formulaElement.style.fontSize = (baseFormulaSize * currentFontScale / 100) + 'px';
             }
             
             if (locationElement) {
-                locationElement.style.fontSize = (14 * currentSize / 100) + 'px';
+                locationElement.style.fontSize = (baseLocationSize * currentFontScale / 100) + 'px';
             }
         });
     }
@@ -112,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function() {
             badgesContainer.appendChild(badge);
         });
         
-        // Apply current size to newly created badges
+        // Apply current size and font size to newly created badges
         updateBadgesSize();
         
         // Show the print button if badges were created

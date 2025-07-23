@@ -54,7 +54,8 @@ textarea {
     cursor: pointer;
 }
 
-#badgeSizeValue {
+#badgeSizeValue,
+#fontSizeValue {
     font-weight: bold;
     color: #4CAF50;
 }
