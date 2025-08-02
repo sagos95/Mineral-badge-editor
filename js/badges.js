@@ -36,32 +36,50 @@ function updateBadgesFontSize(currentFontScale) {
     });
 }
 
+// Function to parse mineral text input
+function parseMineralsInput(inputText) {
+    // Get input text and split by new line
+    const mineralsList = inputText.trim().split('\n');
+    
+    // Filter out empty lines
+    const filteredList = mineralsList.filter(mineral => mineral.trim() !== '');
+    
+    // Parse each mineral entry
+    return filteredList.map(mineral => {
+        // First split by '$' to separate location from the rest
+        const mainParts = mineral.split('$');
+        const mainInfo = mainParts[0].trim();
+        const location = mainParts.length > 1 ? mainParts[1].trim() : '';
+        
+        // Parse mineral main data by splitting on '|'
+        const parts = mainInfo.split('|').map(part => part.trim());
+        
+        return {
+            name: parts[0] || '',
+            formula: parts[1] || '',
+            description: parts[2] || '',
+            location: location
+        };
+    });
+}
+
 // Function to generate badges from input text
 function generateBadges(mineralsInput, badgesContainer, printBtn, currentSize, currentFontScale) {
     // Clear previous badges
     badgesContainer.innerHTML = '';
     
-    // Get input text and split by new line
-    const mineralsList = mineralsInput.value.trim().split('\n');
+    // Parse minerals from input
+    const minerals = parseMineralsInput(mineralsInput.value);
     
-    // Filter out empty lines
-    const filteredList = mineralsList.filter(mineral => mineral.trim() !== '');
-    
-    if (filteredList.length === 0) {
+    if (minerals.length === 0) {
         alert('Пожалуйста, введите хотя бы одно название минерала.');
         return;
     }
     
     // Create badge for each mineral
-    filteredList.forEach(mineral => {
+    minerals.forEach(mineral => {
         const badge = document.createElement('div');
         badge.className = 'mineral-badge';
-        
-        // Parse mineral data by splitting on '|'
-        const parts = mineral.split('|').map(part => part.trim());
-        const mineralName = parts[0] || '';
-        const mineralFormula = parts[1] || '';
-        const mineralLocation = parts[2] || '';
         
         // Create first row container (name and formula)
         const firstRow = document.createElement('div');
@@ -69,24 +87,23 @@ function generateBadges(mineralsInput, badgesContainer, printBtn, currentSize, c
         
         const nameElement = document.createElement('span');
         nameElement.className = 'mineral-name';
-        nameElement.textContent = mineralName;
+        nameElement.textContent = mineral.name;
 
         const formulaElement = document.createElement('span');
         formulaElement.className = 'mineral-formula';
-        formulaElement.textContent = mineralFormula;
+        formulaElement.textContent = mineral.formula;
         
         firstRow.appendChild(nameElement);
         firstRow.appendChild(formulaElement);
         
         const descriptionElement = document.createElement('span');
         descriptionElement.className = 'mineral-description';
-        // todo: replace with description
-        descriptionElement.textContent = mineralName;
+        descriptionElement.textContent = mineral.description;
 
         // Create location info element
         const locationInfo = document.createElement('div');
         locationInfo.className = 'mineral-location';
-        locationInfo.textContent = mineralLocation;
+        locationInfo.textContent = mineral.location;
         
         badge.appendChild(firstRow);
         badge.appendChild(descriptionElement);
