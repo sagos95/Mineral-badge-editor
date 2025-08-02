@@ -51,6 +51,7 @@ function openEditMineralModal(badge) {
     locationInput.value = badge.dataset.location || '';
     
     // Store reference to the badge being edited
+    // This index corresponds to the line number in the input text
     modal.dataset.currentBadgeId = Array.from(badge.parentNode.children).indexOf(badge);
     
     // Show the modal
@@ -88,6 +89,51 @@ function parseMineralsInput(inputText) {
             location: location
         };
     });
+}
+
+// Function to save edited mineral data
+function saveMineralEdit(mineralsInput, badgesContainer, printBtn, currentSize, currentFontScale) {
+    const modal = document.getElementById('editMineralModal');
+    const badgeIndex = parseInt(modal.dataset.currentBadgeId);
+    
+    // Get edited values
+    const nameInput = document.getElementById('editMineralName');
+    const formulaInput = document.getElementById('editMineralFormula');
+    const descriptionInput = document.getElementById('editMineralDescription');
+    const locationInput = document.getElementById('editMineralLocation');
+    
+    const name = nameInput.value.trim();
+    const formula = formulaInput.value.trim();
+    const description = descriptionInput.value.trim();
+    const location = locationInput.value.trim();
+    
+    // Get current minerals text and split into lines
+    const mineralsText = mineralsInput.value;
+    const mineralLines = mineralsText.split('\n');
+    
+    // Create updated mineral text in the format "Name | Formula | Description $ Location"
+    let updatedMineralText = name;
+    if (formula) updatedMineralText += ' | ' + formula;
+    if (description) updatedMineralText += ' | ' + description;
+    if (location) updatedMineralText += ' $ ' + location;
+    
+    // Update the specific line in the minerals text
+    mineralLines[badgeIndex] = updatedMineralText;
+    
+    // Update the input field with the new text
+    mineralsInput.value = mineralLines.join('\n');
+    
+    // Save to storage
+    saveToStorage(STORAGE_KEYS.MINERALS_TEXT, mineralsInput.value);
+    
+    // Close the modal
+    closeEditMineralModal();
+    
+    // Regenerate badges
+    generateBadges(mineralsInput, badgesContainer, printBtn, currentSize, currentFontScale);
+    
+    // Show confirmation alert
+    alert('Минерал успешно обновлен!');
 }
 
 // Function to generate badges from input text

@@ -68,9 +68,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Save button functionality (placeholder for now)
+    // Save button functionality
     saveEditBtn.addEventListener('click', function() {
-        // The save functionality will be implemented later
-        closeEditMineralModal();
+        saveMineralEdit(mineralsInput, badgesContainer, printBtn, currentSizeRef.value, currentFontScaleRef.value);
     });
 });
