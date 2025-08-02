@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const fontSizeValue = document.getElementById('fontSizeValue');
     
     // Base dimensions for badges
-    const baseBadgeWidth = 200;
-    const baseBadgeHeight = 120;
+    const baseBadgeWidth = 265;
+    const baseBadgeHeight = 100;
     
     // Base font sizes
     const baseNameSize = 18;
@@ -182,7 +182,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const nameElement = document.createElement('span');
             nameElement.className = 'mineral-name';
             nameElement.textContent = mineralName;
-            
+
             const formulaElement = document.createElement('span');
             formulaElement.className = 'mineral-formula';
             formulaElement.textContent = mineralFormula;
@@ -190,12 +190,18 @@ document.addEventListener('DOMContentLoaded', function() {
             firstRow.appendChild(nameElement);
             firstRow.appendChild(formulaElement);
             
+            const descriptionElement = document.createElement('span');
+            descriptionElement.className = 'mineral-description';
+            // todo: replace with description
+            descriptionElement.textContent = mineralName;
+
             // Create location info element
             const locationInfo = document.createElement('div');
             locationInfo.className = 'mineral-location';
             locationInfo.textContent = mineralLocation;
             
             badge.appendChild(firstRow);
+            badge.appendChild(descriptionElement);
             badge.appendChild(locationInfo);
             badgesContainer.appendChild(badge);
         });

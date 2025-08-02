@@ -125,11 +125,15 @@ button:hover {
     margin-left: 10px;
 }
 
+.mineral-description {
+    text-align: left;
+    width: 100%;
+}
+
 .mineral-location {
     font-size: 14px;
     transition: font-size 0.3s ease;
-    color: #666;
-    text-align: center;
+    text-align: left;
     width: 100%;
 }
 
