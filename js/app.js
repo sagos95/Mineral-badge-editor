@@ -9,6 +9,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const fontSizeSlider = document.getElementById('fontSize');
     const fontSizeValue = document.getElementById('fontSizeValue');
     
+    // Modal elements
+    const editMineralModal = document.getElementById('editMineralModal');
+    const closeModalBtn = document.getElementById('closeModal');
+    const cancelEditBtn = document.getElementById('cancelEditMineral');
+    const saveEditBtn = document.getElementById('saveEditMineral');
+    
     // State references that can be updated from event listeners
     const currentSizeRef = { value: 100 }; // Default size percentage
     const currentFontScaleRef = { value: 100 }; // Default font scale percentage
@@ -49,5 +55,22 @@ document.addEventListener('DOMContentLoaded', function() {
             currentSizeRef.value, 
             currentFontScaleRef.value
         );
+    });
+    
+    // Modal event listeners
+    closeModalBtn.addEventListener('click', closeEditMineralModal);
+    cancelEditBtn.addEventListener('click', closeEditMineralModal);
+    
+    // Close modal when clicking outside of it
+    editMineralModal.addEventListener('click', function(event) {
+        if (event.target === editMineralModal) {
+            closeEditMineralModal();
+        }
+    });
+    
+    // Save button functionality (placeholder for now)
+    saveEditBtn.addEventListener('click', function() {
+        // The save functionality will be implemented later
+        closeEditMineralModal();
     });
 });

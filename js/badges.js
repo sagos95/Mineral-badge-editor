@@ -36,6 +36,33 @@ function updateBadgesFontSize(currentFontScale) {
     });
 }
 
+// Function to open the edit mineral modal
+function openEditMineralModal(badge) {
+    const modal = document.getElementById('editMineralModal');
+    const nameInput = document.getElementById('editMineralName');
+    const formulaInput = document.getElementById('editMineralFormula');
+    const descriptionInput = document.getElementById('editMineralDescription');
+    const locationInput = document.getElementById('editMineralLocation');
+    
+    // Fill form with current mineral data
+    nameInput.value = badge.dataset.name || '';
+    formulaInput.value = badge.dataset.formula || '';
+    descriptionInput.value = badge.dataset.description || '';
+    locationInput.value = badge.dataset.location || '';
+    
+    // Store reference to the badge being edited
+    modal.dataset.currentBadgeId = Array.from(badge.parentNode.children).indexOf(badge);
+    
+    // Show the modal
+    modal.style.display = 'flex';
+}
+
+// Function to close the edit mineral modal
+function closeEditMineralModal() {
+    const modal = document.getElementById('editMineralModal');
+    modal.style.display = 'none';
+}
+
 // Function to parse mineral text input
 function parseMineralsInput(inputText) {
     // Get input text and split by new line
@@ -81,6 +108,12 @@ function generateBadges(mineralsInput, badgesContainer, printBtn, currentSize, c
         const badge = document.createElement('div');
         badge.className = 'mineral-badge';
         
+        // Store mineral data as dataset attributes
+        badge.dataset.name = mineral.name;
+        badge.dataset.formula = mineral.formula;
+        badge.dataset.description = mineral.description;
+        badge.dataset.location = mineral.location;
+        
         // Create first row container (name and formula)
         const firstRow = document.createElement('div');
         firstRow.className = 'mineral-first-row';
@@ -109,6 +142,11 @@ function generateBadges(mineralsInput, badgesContainer, printBtn, currentSize, c
         badge.appendChild(descriptionElement);
         badge.appendChild(locationInfo);
         badgesContainer.appendChild(badge);
+        
+        // Add click event listener to open edit modal
+        badge.addEventListener('click', function() {
+            openEditMineralModal(this);
+        });
     });
     
     // Apply current size and font size to newly created badges
