@@ -71,8 +71,10 @@ function setupEventListeners(
         window.print();
     });
     
-    // Hide print button initially if no badges
+    // Show print button only if there are badges
     if (badgesContainer.children.length === 0) {
         printBtn.style.display = 'none';
+    } else {
+        printBtn.style.display = 'block';
     }
 }

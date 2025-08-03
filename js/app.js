@@ -46,6 +46,15 @@ document.addEventListener('DOMContentLoaded', function() {
         currentFontScaleRef
     );
     
+    // Automatically generate badges on page load
+    generateBadges(
+        mineralsInput, 
+        badgesContainer, 
+        printBtn, 
+        currentSizeRef.value, 
+        currentFontScaleRef.value
+    );
+    
     // Generate badges when the button is clicked
     generateBtn.addEventListener('click', function() {
         generateBadges(
