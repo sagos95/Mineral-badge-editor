@@ -2,6 +2,8 @@
 
 A web application for creating printable mineral badges with names, chemical formulas, descriptions, and locations.
 
+![Minerals Badge Generator Screenshot](screenshot-1.png)
+
 ## Features
 
 - Enter mineral information in a structured format
