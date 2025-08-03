@@ -21,6 +21,7 @@ A web application for creating printable mineral badges with names, chemical for
    - `Name | Formula | Description $ Location`
    - The pipe symbol `|` separates name, formula, and description
    - The dollar sign `$` separates the main information from the location
+   - You can conveniently copy data from Excel if it's split into columns, but the separators `|` and `$` must still be present (you can add them as separate columns in Excel)
 3. Click the "Generate Badges" button
 4. Review the generated badges
 5. Click any badge to edit its details
