@@ -1,3 +1,5 @@
+[![ru](https://img.shields.io/badge/%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-white.svg)](README.ru.md) [![en](https://img.shields.io/badge/en-white.svg)](README.md)
+
 # Minerals Badge Generator
 
 A web application for creating printable mineral badges with names, chemical formulas, descriptions, and locations.
