@@ -20,6 +20,7 @@ function updateBadgesFontSize(currentFontScale) {
     badges.forEach(badge => {
         const nameElement = badge.querySelector('.mineral-name');
         const formulaElement = badge.querySelector('.mineral-formula');
+        const descriptionElement = badge.querySelector('.mineral-description');
         const locationElement = badge.querySelector('.mineral-location');
         
         if (nameElement) {
@@ -28,6 +29,10 @@ function updateBadgesFontSize(currentFontScale) {
         
         if (formulaElement) {
             formulaElement.style.fontSize = (baseFormulaSize * currentFontScale / 100) + 'px';
+        }
+        
+        if (descriptionElement) {
+            descriptionElement.style.fontSize = (baseDescriptionSize * currentFontScale / 100) + 'px';
         }
         
         if (locationElement) {

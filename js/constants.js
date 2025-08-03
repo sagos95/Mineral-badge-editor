@@ -5,6 +5,7 @@ const baseBadgeHeight = 100;
 // Base font sizes
 const baseNameSize = 18;
 const baseFormulaSize = 16;
+const baseDescriptionSize = 14;
 const baseLocationSize = 14;
 
 // Keys for localStorage
