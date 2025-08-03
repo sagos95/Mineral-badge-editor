@@ -1,4 +1,4 @@
-[![ru](https://img.shields.io/badge/%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-white.svg)](README.ru.md) [![en](https://img.shields.io/badge/en-white.svg)](README.md)
+[![en](https://img.shields.io/badge/english-white.svg)](README.md) [![ru](https://img.shields.io/badge/%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9-white.svg)](README.ru.md)
 
 # Minerals Badge Generator
 
