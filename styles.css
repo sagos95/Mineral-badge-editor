@@ -89,6 +89,16 @@ button:hover {
     margin-bottom: 20px;
 }
 
+/* Hover effect for mineral badges */
+.badges-container:hover .mineral-badge {
+    opacity: 0.2;
+}
+
+.badges-container .mineral-badge:hover {
+    opacity: 1;
+    transition: opacity 0s ease;
+}
+
 .mineral-badge {
     width: 200px;
     height: 120px;
@@ -102,7 +112,7 @@ button:hover {
     background-color: white;
     page-break-inside: avoid;
     overflow: hidden;
-    transition: width 0.3s ease, height 0.3s ease;
+    transition: width 0.3s ease, height 0.3s ease, opacity 0.3s ease;
     cursor: pointer;
 }
 
