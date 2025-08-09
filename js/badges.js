@@ -211,4 +211,11 @@ function generateBadges(mineralsInput, badgesContainer, printBtn, currentSize, c
         const width = parseInt(loadFromStorage(STORAGE_KEYS.CHEM_BORDER_WIDTH, '3')) || 3;
         applyChemicalBorderWidth(width);
     }
+
+    // Apply saved grayscale border color to badges
+    if (typeof applyBadgeBorderColor === 'function') {
+        const savedLightness = parseInt(loadFromStorage(STORAGE_KEYS.BADGE_BORDER_LIGHTNESS, '66')) || 66;
+        const hex = grayscaleFromLightness(savedLightness);
+        applyBadgeBorderColor(hex);
+    }
 }

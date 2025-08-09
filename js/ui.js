@@ -1,9 +1,10 @@
 // Function to load saved settings
-function loadSavedSettings(mineralsInput, badgeSizeSlider, badgeSizeValue, fontSizeSlider, fontSizeValue, chemStyleCheckbox, chemBorderSlider, chemBorderValue) {
+function loadSavedSettings(mineralsInput, badgeSizeSlider, badgeSizeValue, fontSizeSlider, fontSizeValue, chemStyleCheckbox, chemBorderSlider, chemBorderValue, borderLightnessSlider, borderLightnessValue) {
     let currentSize = 100;
     let currentFontScale = 100;
     let chemStyleEnabled = false;
     let chemBorderWidth = 3;
+    let badgeBorderLightness = 66; // percentage 0..100
     
     // Load saved minerals text
     const savedText = loadFromStorage(STORAGE_KEYS.MINERALS_TEXT, '');
@@ -37,7 +38,16 @@ function loadSavedSettings(mineralsInput, badgeSizeSlider, badgeSizeValue, fontS
         chemBorderValue.textContent = chemBorderWidth + 'px';
     }
 
-    return { currentSize, currentFontScale, chemStyleEnabled, chemBorderWidth };
+    // Load saved badge border lightness (for grayscale border)
+    const savedLightness = loadFromStorage(STORAGE_KEYS.BADGE_BORDER_LIGHTNESS, '66');
+    badgeBorderLightness = Math.min(100, Math.max(0, parseInt(savedLightness) || 66));
+    if (borderLightnessSlider && borderLightnessValue) {
+        borderLightnessSlider.value = String(badgeBorderLightness);
+        const hex = grayscaleFromLightness(badgeBorderLightness);
+        borderLightnessValue.textContent = hex;
+    }
+
+    return { currentSize, currentFontScale, chemStyleEnabled, chemBorderWidth, badgeBorderLightness };
 }
 
 // Setup event listeners for UI elements
@@ -54,7 +64,9 @@ function setupEventListeners(
     currentFontScaleRef,
     chemStyleCheckbox,
     chemBorderSlider,
-    chemBorderValue
+    chemBorderValue,
+    borderLightnessSlider,
+    borderLightnessValue
 ) {
     // Auto-save minerals text input
     mineralsInput.addEventListener('input', function() {
@@ -129,6 +141,17 @@ function setupEventListeners(
             }
         });
     }
+
+    // Grayscale border color slider for .mineral-badge border
+    if (borderLightnessSlider && borderLightnessValue) {
+        borderLightnessSlider.addEventListener('input', function() {
+            const lightness = Math.min(100, Math.max(0, parseInt(this.value)));
+            saveToStorage(STORAGE_KEYS.BADGE_BORDER_LIGHTNESS, String(lightness));
+            const hex = grayscaleFromLightness(lightness);
+            borderLightnessValue.textContent = hex;
+            applyBadgeBorderColor(hex);
+        });
+    }
 }
 
 function applyChemicalBorderWidth(widthPx) {
@@ -146,5 +169,19 @@ function resetChemicalBorderStyles() {
         desc.style.borderLeftWidth = '';
         desc.style.borderLeftStyle = '';
         desc.style.borderLeftColor = '';
+    });
+}
+
+function grayscaleFromLightness(lightnessPercent) {
+    const value = Math.round(255 * (lightnessPercent / 100));
+    const clamped = Math.min(255, Math.max(0, value));
+    const hex = clamped.toString(16).padStart(2, '0');
+    return `#${hex}${hex}${hex}`;
+}
+
+function applyBadgeBorderColor(hexColor) {
+    const badges = document.querySelectorAll('.mineral-badge');
+    badges.forEach(badge => {
+        badge.style.borderColor = hexColor;
     });
 }

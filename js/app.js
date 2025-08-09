@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const badgeSizeValue = document.getElementById('badgeSizeValue');
     const fontSizeSlider = document.getElementById('fontSize');
     const fontSizeValue = document.getElementById('fontSizeValue');
+    const borderLightnessSlider = document.getElementById('borderLightness');
+    const borderLightnessValue = document.getElementById('borderLightnessValue');
     const chemStyleCheckbox = document.getElementById('chemStyle');
     const chemBorderSlider = document.getElementById('chemBorderWidth');
     const chemBorderValue = document.getElementById('chemBorderWidthValue');
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentFontScaleRef = { value: 100 }; // Default font scale percentage
     
     // Load saved settings
-    const { currentSize, currentFontScale, chemStyleEnabled, chemBorderWidth } = loadSavedSettings(
+    const { currentSize, currentFontScale, chemStyleEnabled, chemBorderWidth, badgeBorderLightness } = loadSavedSettings(
         mineralsInput, 
         badgeSizeSlider, 
         badgeSizeValue, 
@@ -31,7 +33,9 @@ document.addEventListener('DOMContentLoaded', function() {
         fontSizeValue,
         chemStyleCheckbox,
         chemBorderSlider,
-        chemBorderValue
+        chemBorderValue,
+        borderLightnessSlider,
+        borderLightnessValue
     );
     
     // Update reference values
@@ -52,7 +56,9 @@ document.addEventListener('DOMContentLoaded', function() {
         currentFontScaleRef,
         chemStyleCheckbox,
         chemBorderSlider,
-        chemBorderValue
+        chemBorderValue,
+        borderLightnessSlider,
+        borderLightnessValue
     );
     
     // Automatically generate badges on page load
@@ -63,6 +69,12 @@ document.addEventListener('DOMContentLoaded', function() {
         currentSizeRef.value, 
         currentFontScaleRef.value
     );
+
+    // Apply saved border color to badges after initial render
+    if (typeof applyBadgeBorderColor === 'function') {
+        const hex = grayscaleFromLightness(badgeBorderLightness);
+        applyBadgeBorderColor(hex);
+    }
 
     // Apply Chemical lab styling after initial render if enabled
     if (chemStyleEnabled) {
