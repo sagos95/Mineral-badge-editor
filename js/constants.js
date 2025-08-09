@@ -12,5 +12,7 @@ const baseLocationSize = 14;
 const STORAGE_KEYS = {
     MINERALS_TEXT: 'minerals-badges-text',
     BADGE_SIZE: 'minerals-badges-size',
-    FONT_SIZE: 'minerals-badges-font-size'
+    FONT_SIZE: 'minerals-badges-font-size',
+    CHEM_STYLE_ENABLED: 'minerals-badges-chem-style-enabled',
+    CHEM_BORDER_WIDTH: 'minerals-badges-chem-border-width'
 };

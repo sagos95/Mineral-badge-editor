@@ -146,6 +146,18 @@ button:hover {
     width: 100%;
 }
 
+/* Chemical lab style */
+.chemical-lab .mineral-badge {
+    font-family: monospace;
+}
+
+.chemical-lab .mineral-description {
+    border-left: 3px solid black;
+    padding-left: 5px;
+    margin-top: 1px;
+    margin-bottom: 2px;
+}
+
 .mineral-location {
     font-size: 14px;
     transition: font-size 0.3s ease;

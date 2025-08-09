@@ -205,4 +205,10 @@ function generateBadges(mineralsInput, badgesContainer, printBtn, currentSize, c
     
     // Show the print button if badges were created
     printBtn.style.display = 'block';
+
+    // Re-apply Chemical lab border width if style is enabled
+    if (document.body.classList.contains('chemical-lab') && typeof applyChemicalBorderWidth === 'function') {
+        const width = parseInt(loadFromStorage(STORAGE_KEYS.CHEM_BORDER_WIDTH, '3')) || 3;
+        applyChemicalBorderWidth(width);
+    }
 }

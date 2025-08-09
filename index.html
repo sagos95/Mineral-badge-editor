@@ -30,6 +30,18 @@
                 <label for="fontSize">Размер шрифта: <span id="fontSizeValue">100%</span></label>
                 <input type="range" id="fontSize" min="60" max="150" value="100" step="5">
             </div>
+
+            <div class="size-control">
+                <label>
+                    <input type="checkbox" id="chemStyle">
+                    Режим "Chemical lab"
+                </label>
+            </div>
+
+            <div class="size-control" id="chemBorderControl" style="display: none;">
+                <label for="chemBorderWidth">Толщина линии описания: <span id="chemBorderWidthValue">3px</span></label>
+                <input type="range" id="chemBorderWidth" min="1" max="10" value="3" step="1">
+            </div>
             
             <div class="button-group">
                 <button id="generateBtn">Создать бейджи</button>

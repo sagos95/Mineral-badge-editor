@@ -1,7 +1,9 @@
 // Function to load saved settings
-function loadSavedSettings(mineralsInput, badgeSizeSlider, badgeSizeValue, fontSizeSlider, fontSizeValue) {
+function loadSavedSettings(mineralsInput, badgeSizeSlider, badgeSizeValue, fontSizeSlider, fontSizeValue, chemStyleCheckbox, chemBorderSlider, chemBorderValue) {
     let currentSize = 100;
     let currentFontScale = 100;
+    let chemStyleEnabled = false;
+    let chemBorderWidth = 3;
     
     // Load saved minerals text
     const savedText = loadFromStorage(STORAGE_KEYS.MINERALS_TEXT, '');
@@ -21,7 +23,21 @@ function loadSavedSettings(mineralsInput, badgeSizeSlider, badgeSizeValue, fontS
     fontSizeSlider.value = currentFontScale;
     fontSizeValue.textContent = currentFontScale + '%';
     
-    return { currentSize, currentFontScale };
+    // Load Chemical lab style state
+    const savedChemEnabled = loadFromStorage(STORAGE_KEYS.CHEM_STYLE_ENABLED, '0');
+    chemStyleEnabled = savedChemEnabled === '1';
+    if (chemStyleCheckbox) {
+        chemStyleCheckbox.checked = chemStyleEnabled;
+    }
+
+    const savedChemBorder = loadFromStorage(STORAGE_KEYS.CHEM_BORDER_WIDTH, '3');
+    chemBorderWidth = parseInt(savedChemBorder) || 3;
+    if (chemBorderSlider && chemBorderValue) {
+        chemBorderSlider.value = chemBorderWidth;
+        chemBorderValue.textContent = chemBorderWidth + 'px';
+    }
+
+    return { currentSize, currentFontScale, chemStyleEnabled, chemBorderWidth };
 }
 
 // Setup event listeners for UI elements
@@ -35,7 +51,10 @@ function setupEventListeners(
     printBtn,
     badgesContainer,
     currentSizeRef,
-    currentFontScaleRef
+    currentFontScaleRef,
+    chemStyleCheckbox,
+    chemBorderSlider,
+    chemBorderValue
 ) {
     // Auto-save minerals text input
     mineralsInput.addEventListener('input', function() {
@@ -77,4 +96,55 @@ function setupEventListeners(
     } else {
         printBtn.style.display = 'block';
     }
+
+    // Chemical lab style toggle
+    if (chemStyleCheckbox) {
+        chemStyleCheckbox.addEventListener('change', function() {
+            const enabled = this.checked;
+            document.body.classList.toggle('chemical-lab', enabled);
+            saveToStorage(STORAGE_KEYS.CHEM_STYLE_ENABLED, enabled ? '1' : '0');
+
+            // Show/hide border width control
+            const control = document.getElementById('chemBorderControl');
+            if (control) control.style.display = enabled ? 'block' : 'none';
+
+            // Apply current border width when enabling
+            if (enabled) {
+                applyChemicalBorderWidth(parseInt(chemBorderSlider.value || '3'));
+            } else {
+                // Remove inline border-left styles when disabled
+                resetChemicalBorderStyles();
+            }
+        });
+    }
+
+    // Chemical lab border width slider
+    if (chemBorderSlider && chemBorderValue) {
+        chemBorderSlider.addEventListener('input', function() {
+            const width = parseInt(this.value);
+            chemBorderValue.textContent = width + 'px';
+            saveToStorage(STORAGE_KEYS.CHEM_BORDER_WIDTH, String(width));
+            if (chemStyleCheckbox && chemStyleCheckbox.checked) {
+                applyChemicalBorderWidth(width);
+            }
+        });
+    }
+}
+
+function applyChemicalBorderWidth(widthPx) {
+    const descriptions = document.querySelectorAll('.mineral-description');
+    descriptions.forEach(desc => {
+        desc.style.borderLeftWidth = widthPx + 'px';
+        desc.style.borderLeftStyle = 'solid';
+        desc.style.borderLeftColor = 'black';
+    });
+}
+
+function resetChemicalBorderStyles() {
+    const descriptions = document.querySelectorAll('.mineral-description');
+    descriptions.forEach(desc => {
+        desc.style.borderLeftWidth = '';
+        desc.style.borderLeftStyle = '';
+        desc.style.borderLeftColor = '';
+    });
 }

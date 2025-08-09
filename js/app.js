@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const badgeSizeValue = document.getElementById('badgeSizeValue');
     const fontSizeSlider = document.getElementById('fontSize');
     const fontSizeValue = document.getElementById('fontSizeValue');
+    const chemStyleCheckbox = document.getElementById('chemStyle');
+    const chemBorderSlider = document.getElementById('chemBorderWidth');
+    const chemBorderValue = document.getElementById('chemBorderWidthValue');
     
     // Modal elements
     const editMineralModal = document.getElementById('editMineralModal');
@@ -20,12 +23,15 @@ document.addEventListener('DOMContentLoaded', function() {
     const currentFontScaleRef = { value: 100 }; // Default font scale percentage
     
     // Load saved settings
-    const { currentSize, currentFontScale } = loadSavedSettings(
+    const { currentSize, currentFontScale, chemStyleEnabled, chemBorderWidth } = loadSavedSettings(
         mineralsInput, 
         badgeSizeSlider, 
         badgeSizeValue, 
         fontSizeSlider, 
-        fontSizeValue
+        fontSizeValue,
+        chemStyleCheckbox,
+        chemBorderSlider,
+        chemBorderValue
     );
     
     // Update reference values
@@ -43,7 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
         printBtn,
         badgesContainer,
         currentSizeRef,
-        currentFontScaleRef
+        currentFontScaleRef,
+        chemStyleCheckbox,
+        chemBorderSlider,
+        chemBorderValue
     );
     
     // Automatically generate badges on page load
@@ -54,6 +63,16 @@ document.addEventListener('DOMContentLoaded', function() {
         currentSizeRef.value, 
         currentFontScaleRef.value
     );
+
+    // Apply Chemical lab styling after initial render if enabled
+    if (chemStyleEnabled) {
+        document.body.classList.add('chemical-lab');
+        const control = document.getElementById('chemBorderControl');
+        if (control) control.style.display = 'block';
+        if (typeof applyChemicalBorderWidth === 'function') {
+            applyChemicalBorderWidth(chemBorderWidth);
+        }
+    }
     
     // Generate badges when the button is clicked
     generateBtn.addEventListener('click', function() {
